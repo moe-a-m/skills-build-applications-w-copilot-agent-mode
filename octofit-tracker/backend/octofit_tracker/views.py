@@ -3,16 +3,20 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import UserSerializer, TeamSerializer, ActivitySerializer, LeaderboardSerializer, WorkoutSerializer
 from .models import User, Team, Activity, Leaderboard, Workout
+import os
 
 @api_view(['GET', 'POST'])
 def api_root(request, format=None):
-    base_url = 'http://localhost:8000/'
+    # Dynamically get the codespace URL from environment or fallback to localhost
+    codespace_url = os.environ.get('CODESPACE_BACKEND_URL', 'http://localhost:8000/')
+    if not codespace_url.endswith('/'):
+        codespace_url += '/'
     return Response({
-        'users': base_url + 'api/users/?format=api',
-        'teams': base_url + 'api/teams/?format=api',
-        'activities': base_url + 'api/activities/?format=api',
-        'leaderboard': base_url + 'api/leaderboard/?format=api',
-        'workouts': base_url + 'api/workouts/?format=api'
+        'users': codespace_url + 'api/users/?format=api',
+        'teams': codespace_url + 'api/teams/?format=api',
+        'activities': codespace_url + 'api/activities/?format=api',
+        'leaderboard': codespace_url + 'api/leaderboard/?format=api',
+        'workouts': codespace_url + 'api/workouts/?format=api'
     })
 
 class UserViewSet(viewsets.ModelViewSet):
