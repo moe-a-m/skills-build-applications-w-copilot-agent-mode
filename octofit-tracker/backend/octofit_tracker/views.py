@@ -7,10 +7,8 @@ import os
 
 @api_view(['GET', 'POST'])
 def api_root(request, format=None):
-    # Dynamically get the codespace URL from environment or fallback to localhost
-    codespace_url = os.environ.get('CODESPACE_BACKEND_URL', 'http://localhost:8000/')
-    if not codespace_url.endswith('/'):
-        codespace_url += '/'
+    # Use the Codespace URL for API endpoints
+    codespace_url = 'https://redesigned-spork-g6pj46rr9hpp6x-8000.app.github.dev/'
     return Response({
         'users': codespace_url + 'api/users/?format=api',
         'teams': codespace_url + 'api/teams/?format=api',
